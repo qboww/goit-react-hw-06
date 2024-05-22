@@ -1,9 +1,19 @@
 import { useId } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changeFilter, selectNameFilter } from "../../redux/filtersSlice";
 
 import css from "./SearchBox.module.css";
 
-export const SearchBox = ({ value, onFilter }) => {
+export const SearchBox = () => {
   const filterFieldId = useId();
+
+  const { name } = useSelector(selectNameFilter);
+
+  const dispatch = useDispatch();
+
+  const handleChange = (event) => {
+    dispatch(changeFilter(event.target.value));
+  };
 
   return (
     <div className="sub-card">
@@ -14,9 +24,9 @@ export const SearchBox = ({ value, onFilter }) => {
           type="text"
           name="filter"
           id={filterFieldId}
-          value={value}
           placeholder="Enter search prompt..."
-          onChange={(e) => onFilter(e.target.value)}
+          value={name}
+          onChange={handleChange}
         />
       </div>
     </div>

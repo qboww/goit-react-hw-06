@@ -2,6 +2,9 @@ import { Field, Formik, Form, ErrorMessage } from "formik";
 import { nanoid } from "nanoid";
 import { useId } from "react";
 
+import { addContact } from "../../redux/contactsSlice";
+import { useDispatch } from "react-redux";
+
 import * as yup from "yup";
 
 import css from "./ContactForm.module.css";
@@ -27,17 +30,16 @@ const validationSchema = yup.object().shape({
     .max(12, "Number cannot exceed 12 characters"),
 });
 
-export const ContactForm = ({ onAdd }) => {
+export const ContactForm = () => {
   const nameFieldId = useId();
   const numberFieldId = useId();
 
-  const handleSubmit = (values, { resetForm }) => {
-    onAdd({
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-    });
-    resetForm();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (values, actions) => {
+    dispatch(addContact(values));
+
+    actions.resetForm();
   };
 
   return (
